@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:functional_listener/functional_listener.dart';
+import 'package:listen_it/listen_it.dart';
 
 import 'listview.dart';
 import 'main.dart';
@@ -15,14 +15,16 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     errorSubscription ??= weatherManager.updateWeatherCommand.errors
-        // .where((x) => x != null) // filter out the error value reset
-        .listen((error, _) {
+    // .where((x) => x != null) // filter out the error value reset
+    .listen((error, _) {
       showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('An error has occured!'),
-                content: Text(error.toString()),
-              ));
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: const Text('An error has occured!'),
+              content: Text(error.toString()),
+            ),
+      );
     });
     super.didChangeDependencies();
   }
@@ -85,14 +87,16 @@ class _HomePageState extends State<HomePage> {
                         weatherManager.updateWeatherCommand.canExecute,
                     builder: (BuildContext context, bool canExecute, _) {
                       // Depending on the value of canExecute we set or clear the Handler
-                      final handler = canExecute
-                          ? weatherManager.updateWeatherCommand
-                          : null;
+                      final handler =
+                          canExecute
+                              ? weatherManager.updateWeatherCommand
+                              : null;
                       return ElevatedButton(
                         child: Text('Update'),
                         style: ElevatedButton.styleFrom(
-                            foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                            backgroundColor: Color.fromARGB(255, 33, 150, 243)),
+                          foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                          backgroundColor: Color.fromARGB(255, 33, 150, 243),
+                        ),
 
                         /// because of a current limitation of Dart
                         /// we have to use `?.execute` if the command is
@@ -103,13 +107,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 ValueListenableBuilder<bool>(
-                    valueListenable: weatherManager.setExecutionStateCommand,
-                    builder: (context, value, _) {
-                      return Switch(
-                        value: value,
-                        onChanged: weatherManager.setExecutionStateCommand,
-                      );
-                    })
+                  valueListenable: weatherManager.setExecutionStateCommand,
+                  builder: (context, value, _) {
+                    return Switch(
+                      value: value,
+                      onChanged: weatherManager.setExecutionStateCommand,
+                    );
+                  },
+                ),
               ],
             ),
           ),

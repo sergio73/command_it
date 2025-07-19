@@ -62,7 +62,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_command:
+  command_it:
     dependency: "direct main"
     description:
       path: ".."
@@ -82,10 +82,10 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  functional_listener:
+  listen_it:
     dependency: transitive
     description:
-      name: functional_listener
+      name: listen_it
       sha256: "026d1bd4f66367f11d9ec9f1f1ddb42b89e4484b356972c76d983266cf82f33f"
       url: "https://pub.dev"
     source: hosted

@@ -6,7 +6,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 If the wrapped function inside a `Command` throws an `Exception` the `Command` catches it so your App won't crash.
 Instead it will wrap the caught error together with the value that was passed when the command was executed in a `CommandError` object and assign it to the `Command's` `thrownExceptions` property which is a `ValueListenable<CommandError>`.
-So to react on occurring error you can register your handler with `addListener` or use my `listen` extension function from `functional_listener` as it is done in the example:
+So to react on occurring error you can register your handler with `addListener` or use my `listen` extension function from `listen_it` as it is done in the example:
 
 ```Dart
 /// in HomePage.dart
@@ -28,7 +28,7 @@ void didChangeDependencies() {
 }
 ```
 
-Unfortunately its not possible to reset the value of a `ValueNotifier` without triggering its listeners. So if you have registered a listener you will get it called at every start of a `Command` execution with a value of `null` and clear all previous errors. If you use `functional_listener` you can do it easily by using the `where` extension.
+Unfortunately its not possible to reset the value of a `ValueNotifier` without triggering its listeners. So if you have registered a listener you will get it called at every start of a `Command` execution with a value of `null` and clear all previous errors. If you use `listen_it` you can do it easily by using the `where` extension.
 
 ### Error handling the fine print
 
@@ -42,7 +42,7 @@ static void Function(String commandName, CommandError<Object> error) globalExcep
 
 If you assign a handler function to it, it will be called for all Exceptions thrown by any `Command` in your app independent of the value of `catchAlways` if the `Command` has no listeners on `thrownExceptions` or on `results`.
 
-The overall work flow of exception handling in flutter_command is depicted in the following diagram.
+The overall work flow of exception handling in command_it is depicted in the following diagram.
 
 <img alt="Error Handling" src={useBaseUrl('img/exception_handling.png')} />
 

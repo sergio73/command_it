@@ -1,4 +1,7 @@
-[7.2.2] - 25.12.2024
+[8.0.0] - 19.07.2025
+* although this doesn't add any new functionality because of the rebranding from flutter_command to command_it we use the next major version
+
+[7.2.2] - 25.12.2024 >> from here all entries reference the old flutter_command package
 * another fix
 [7.2.1] - 25.12.2024
 * logic fix
@@ -12,7 +15,7 @@ if the Command doesn't return a value.
 [7.0.0] 14.11.2024
 * add stricter static type checks. this is a breaking change because the `globalExceptionHandler` correctly has to accept `CommandError<dynamic>` instead of `CommandError<Object>`
 [6.0.1] 29.09.2024
-* Update to latest version of functional_listener to fix a potential bug when removing the last listener from `canExecute`
+* Update to latest version of listen_it to fix a potential bug when removing the last listener from `canExecute`
 [6.0.0] 
 * official new release
 [6.0.0+pre2] 

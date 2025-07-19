@@ -1,4 +1,4 @@
-part of flutter_command;
+part of command_it;
 
 class CommandBuilder<TParam, TResult> extends StatelessWidget {
   final Command<TParam, TResult> command;
@@ -10,7 +10,7 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
   /// If your command has a return value, you can use this builder to build a widget
   /// when the command is executed successfully.
   final Widget Function(BuildContext context, TResult data, TParam? param)?
-      onData;
+  onData;
 
   /// If the command has no return value or returns null, this builder will be called when the
   /// command is executed successfully.
@@ -19,13 +19,15 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
     BuildContext context,
     TResult? lastValue,
     TParam? param,
-  )? whileExecuting;
+  )?
+  whileExecuting;
   final Widget Function(
     BuildContext context,
     Object,
     TResult? lastValue,
     TParam?,
-  )? onError;
+  )?
+  onError;
 
   const CommandBuilder({
     required this.command,
@@ -44,27 +46,32 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
       valueListenable: command.results,
       builder: (context, result, _) {
         return result.toWidget(
-          onData: onData != null
-              ? (data, paramData) => onData!.call(context, data, paramData)
-              : null,
-          onSuccess: onSuccess != null
-              ? (paramData) => onSuccess!.call(context, paramData)
-              : null,
-          onNullData: onNullData != null
-              ? (paramData) => onNullData!.call(context, paramData)
-              : null,
-          whileExecuting: whileExecuting != null
-              ? (lastData, paramData) =>
-                  whileExecuting!.call(context, lastData, paramData)
-              : null,
+          onData:
+              onData != null
+                  ? (data, paramData) => onData!.call(context, data, paramData)
+                  : null,
+          onSuccess:
+              onSuccess != null
+                  ? (paramData) => onSuccess!.call(context, paramData)
+                  : null,
+          onNullData:
+              onNullData != null
+                  ? (paramData) => onNullData!.call(context, paramData)
+                  : null,
+          whileExecuting:
+              whileExecuting != null
+                  ? (lastData, paramData) =>
+                      whileExecuting!.call(context, lastData, paramData)
+                  : null,
           onError: (lastData, error, paramData) {
             if (onError == null) {
               return const SizedBox();
             }
             assert(
-                result.errorReaction?.shouldCallLocalHandler == true,
-                'This CommandBuilder received an error from Command ${command.name} '
-                'but the errorReaction indidates that the error should not be handled locally. ');
+              result.errorReaction?.shouldCallLocalHandler == true,
+              'This CommandBuilder received an error from Command ${command.name} '
+              'but the errorReaction indidates that the error should not be handled locally. ',
+            );
             return onError!.call(context, lastData, error, paramData);
           },
         );
@@ -82,8 +89,10 @@ extension ToWidgeCommandResult<TParam, TResult>
     Widget Function(TResult? lastResult, TParam? param)? whileExecuting,
     Widget Function(Object error, TResult? lastResult, TParam? param)? onError,
   }) {
-    assert(onData != null || onSuccess != null,
-        'You have to provide at least a builder for onData or onSuccess');
+    assert(
+      onData != null || onSuccess != null,
+      'You have to provide at least a builder for onData or onSuccess',
+    );
     if (error != null) {
       return onError?.call(error!, data, paramData) ?? const SizedBox();
     }

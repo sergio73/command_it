@@ -1,4 +1,4 @@
-part of './flutter_command.dart';
+part of './command_it.dart';
 
 class CommandAsync<TParam, TResult> extends Command<TParam, TResult> {
   Future<TResult> Function(TParam)? _func;
@@ -16,8 +16,8 @@ class CommandAsync<TParam, TResult> extends Command<TParam, TResult> {
     required super.notifyOnlyWhenValueChanges,
     required super.name,
     required super.noParamValue,
-  })  : _func = func,
-        _funcNoParam = funcNoParam;
+  }) : _func = func,
+       _funcNoParam = funcNoParam;
 
   @override
   // ignore: avoid_void_async

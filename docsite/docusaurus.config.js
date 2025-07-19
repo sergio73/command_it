@@ -2,10 +2,10 @@ module.exports = {
   title: 'Flutter Command',
   tagline: 'State management without a state',
   url: 'https://Abhilash-Chandran.github.io',
-  baseUrl: '/flutter_command/',  
+  baseUrl: '/command_it/',  
   favicon: 'img/favicon.ico',
   organizationName: 'Abhilash-Chandran', // Usually your GitHub org/user name.
-  projectName: 'flutter_command', // Usually your repo name.  
+  projectName: 'command_it', // Usually your repo name.  
   onBrokenLinks: 'throw',
   themeConfig: {
     prism: {
@@ -25,7 +25,7 @@ module.exports = {
           position: 'left',
         },        
         {
-          href: 'https://github.com/escamoteur/flutter_command',
+          href: 'https://github.com/escamoteur/command_it',
           label: 'GitHub',
           position: 'right',
         },
@@ -73,7 +73,7 @@ module.exports = {
             },           
             {
               label: 'GitHub',
-              href: 'https://github.com/escamoteur/flutter_command',
+              href: 'https://github.com/escamoteur/command_it',
             },
           ],
         },
@@ -91,7 +91,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/escamoteur/flutter_command',
+            'https://github.com/escamoteur/command_it',
         },        
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

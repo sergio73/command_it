@@ -1,5 +1,5 @@
+import 'package:command_it/command_it.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_command/flutter_command.dart';
 import 'package:flutter_weather_demo/main.dart';
 import 'package:flutter_weather_demo/weather_manager.dart';
 
@@ -36,21 +36,23 @@ class _HomePageState extends State<HomePage> {
             // Handle events to show / hide spinner
             child: CommandBuilder<String?, List<WeatherEntry>>(
               command: weatherManager.updateWeatherCommand,
-              whileExecuting: (context, _, __) => Center(
-                child: SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+              whileExecuting:
+                  (context, _, __) => Center(
+                    child: SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
               onData: (context, data, _) => WeatherListView(data),
-              onError: (context, error, _, param) => Column(
-                children: [
-                  Text('An Error has occurred!'),
-                  Text(error.toString()),
-                  Text('For search term: $param')
-                ],
-              ),
+              onError:
+                  (context, error, _, param) => Column(
+                    children: [
+                      Text('An Error has occurred!'),
+                      Text(error.toString()),
+                      Text('For search term: $param'),
+                    ],
+                  ),
             ),
           ),
           Padding(
@@ -64,14 +66,16 @@ class _HomePageState extends State<HomePage> {
                         weatherManager.updateWeatherCommand.canExecute,
                     builder: (BuildContext context, bool canExecute, _) {
                       // Depending on th?e value f canExecute we set or clear the Handler
-                      final handler = canExecute
-                          ? weatherManager.updateWeatherCommand
-                          : null;
+                      final handler =
+                          canExecute
+                              ? weatherManager.updateWeatherCommand
+                              : null;
                       return ElevatedButton(
                         child: Text('Update'),
                         style: ElevatedButton.styleFrom(
-                            foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                            backgroundColor: Color.fromARGB(255, 33, 150, 243)),
+                          foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                          backgroundColor: Color.fromARGB(255, 33, 150, 243),
+                        ),
 
                         /// because of a current limitation of Dart
                         /// we have to use `?.execute` if the command is
@@ -82,13 +86,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 ValueListenableBuilder<bool>(
-                    valueListenable: weatherManager.setExecutionStateCommand,
-                    builder: (context, value, _) {
-                      return Switch(
-                        value: value,
-                        onChanged: weatherManager.setExecutionStateCommand,
-                      );
-                    })
+                  valueListenable: weatherManager.setExecutionStateCommand,
+                  builder: (context, value, _) {
+                    return Switch(
+                      value: value,
+                      onChanged: weatherManager.setExecutionStateCommand,
+                    );
+                  },
+                ),
               ],
             ),
           ),

@@ -1,4 +1,4 @@
-import 'package:flutter_command/flutter_command.dart';
+import 'package:command_it/command_it.dart';
 import 'package:test/test.dart';
 
 enum TestType { error, exception, assertion }
@@ -41,15 +41,12 @@ void main() {
       final filter = PredicatesErrorFilter([
         (error, stacktrace) => errorFilter<Error>(error, ErrorReaction.none),
         (error, stacktrace) => errorFilter<Exception>(
-              error,
-              ErrorReaction.firstLocalThenGlobalHandler,
-            ),
+          error,
+          ErrorReaction.firstLocalThenGlobalHandler,
+        ),
       ]);
 
-      expect(
-        filter.filter(Error(), StackTrace.current),
-        ErrorReaction.none,
-      );
+      expect(filter.filter(Error(), StackTrace.current), ErrorReaction.none);
       expect(
         filter.filter(Exception(), StackTrace.current),
         ErrorReaction.firstLocalThenGlobalHandler,
@@ -62,10 +59,7 @@ void main() {
     test('ExemptionFilterTest', () {
       final filter = ErrorFilterExcemption<Error>(ErrorReaction.none);
 
-      expect(
-        filter.filter(Error(), StackTrace.current),
-        ErrorReaction.none,
-      );
+      expect(filter.filter(Error(), StackTrace.current), ErrorReaction.none);
       expect(
         filter.filter(Exception(), StackTrace.current),
         ErrorReaction.defaulErrorFilter,
@@ -77,27 +71,32 @@ void main() {
     });
   });
   group('ErrorRection.none', () {
-    test('throws an assertion although there is a filter for it (as intended))',
-        () async {
-      Object? globalHandlerCaught;
-      Object? localHandlerCaught;
+    test(
+      'throws an assertion although there is a filter for it (as intended))',
+      () async {
+        Object? globalHandlerCaught;
+        Object? localHandlerCaught;
 
-      final testCommand = Command.createAsyncNoParamNoResult(
-        () => asyncFunction1(TestType.assertion),
-        errorFilter: PredicatesErrorFilter([
-          (error, stacktrace) =>
-              errorFilter<AssertionError>(error, ErrorReaction.none),
-        ]),
-      );
-      testCommand.errors.listen((error, _) => localHandlerCaught = error);
-      Command.globalExceptionHandler =
-          (error, _) => globalHandlerCaught = error.error;
+        final testCommand = Command.createAsyncNoParamNoResult(
+          () => asyncFunction1(TestType.assertion),
+          errorFilter: PredicatesErrorFilter([
+            (error, stacktrace) =>
+                errorFilter<AssertionError>(error, ErrorReaction.none),
+          ]),
+        );
+        testCommand.errors.listen((error, _) => localHandlerCaught = error);
+        Command.globalExceptionHandler =
+            (error, _) => globalHandlerCaught = error.error;
 
-      expectLater(() => testCommand.execute(), throwsA(isA<AssertionError>()));
-      await Future<void>.delayed(const Duration(seconds: 1));
-      expect(localHandlerCaught, null);
-      expect(globalHandlerCaught, null);
-    });
+        expectLater(
+          () => testCommand.execute(),
+          throwsA(isA<AssertionError>()),
+        );
+        await Future<void>.delayed(const Duration(seconds: 1));
+        expect(localHandlerCaught, null);
+        expect(globalHandlerCaught, null);
+      },
+    );
     test('Assertion is handled like any other error', () async {
       Object? globalHandlerCaught;
       Object? localHandlerCaught;
@@ -146,9 +145,7 @@ void main() {
 
       final testCommand = Command.createAsyncNoParamNoResult(
         () => asyncFunction1(TestType.exception),
-        errorFilter: const TableErrorFilter({
-          Exception: ErrorReaction.none,
-        }),
+        errorFilter: const TableErrorFilter({Exception: ErrorReaction.none}),
       );
       testCommand.errors.listen((error, _) => localHandlerCaught = error);
       Command.globalExceptionHandler =
@@ -216,8 +213,9 @@ void main() {
               errorFilter<Exception>(error, ErrorReaction.localHandler),
         ]),
       );
-      testCommand.errors
-          .listen((error, _) => localHandlerCaught = error?.error);
+      testCommand.errors.listen(
+        (error, _) => localHandlerCaught = error?.error,
+      );
       Command.globalExceptionHandler = (error, _) {
         globalHandlerCaught = error.error;
       };
@@ -236,13 +234,14 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.localAndGlobalHandler,
-              ),
+            error,
+            ErrorReaction.localAndGlobalHandler,
+          ),
         ]),
       );
-      testCommand.errors
-          .listen((error, _) => localHandlerCaught = error?.error);
+      testCommand.errors.listen(
+        (error, _) => localHandlerCaught = error?.error,
+      );
       Command.globalExceptionHandler = (error, _) {
         globalHandlerCaught = error.error;
       };
@@ -261,9 +260,9 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.firstLocalThenGlobalHandler,
-              ),
+            error,
+            ErrorReaction.firstLocalThenGlobalHandler,
+          ),
         ]),
       );
       Command.globalExceptionHandler = (error, _) {
@@ -284,13 +283,14 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.firstLocalThenGlobalHandler,
-              ),
+            error,
+            ErrorReaction.firstLocalThenGlobalHandler,
+          ),
         ]),
       );
-      testCommand.errors
-          .listen((error, _) => localHandlerCaught = error?.error);
+      testCommand.errors.listen(
+        (error, _) => localHandlerCaught = error?.error,
+      );
       Command.globalExceptionHandler = (error, _) {
         globalHandlerCaught = error.error;
       };
@@ -309,9 +309,9 @@ void main() {
         () => asyncFunctionBoolExeption(),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.firstLocalThenGlobalHandler,
-              ),
+            error,
+            ErrorReaction.firstLocalThenGlobalHandler,
+          ),
         ]),
         initialValue: true,
       );
@@ -339,9 +339,9 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.firstLocalThenGlobalHandler,
-              ),
+            error,
+            ErrorReaction.firstLocalThenGlobalHandler,
+          ),
         ]),
       );
       expectLater(() => testCommand.execute(), throwsA(isA<AssertionError>()));
@@ -359,9 +359,9 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.noHandlersThrowException,
-              ),
+            error,
+            ErrorReaction.noHandlersThrowException,
+          ),
         ]),
       );
       expectLater(() => testCommand.execute(), throwsA(isA<Exception>()));
@@ -378,13 +378,14 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.noHandlersThrowException,
-              ),
+            error,
+            ErrorReaction.noHandlersThrowException,
+          ),
         ]),
       );
-      testCommand.errors
-          .listen((error, _) => localHandlerCaught = error?.error);
+      testCommand.errors.listen(
+        (error, _) => localHandlerCaught = error?.error,
+      );
       testCommand.execute();
       await Future<void>.delayed(const Duration(seconds: 1));
 
@@ -399,9 +400,9 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.noHandlersThrowException,
-              ),
+            error,
+            ErrorReaction.noHandlersThrowException,
+          ),
         ]),
       );
       Command.globalExceptionHandler = (error, _) {
@@ -421,13 +422,14 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.noHandlersThrowException,
-              ),
+            error,
+            ErrorReaction.noHandlersThrowException,
+          ),
         ]),
       );
-      testCommand.errors
-          .listen((error, _) => localHandlerCaught = error?.error);
+      testCommand.errors.listen(
+        (error, _) => localHandlerCaught = error?.error,
+      );
       Command.globalExceptionHandler = (error, _) {
         globalHandlerCaught = error.error;
       };
@@ -445,13 +447,14 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.throwIfNoLocalHandler,
-              ),
+            error,
+            ErrorReaction.throwIfNoLocalHandler,
+          ),
         ]),
       );
-      testCommand.errors
-          .listen((error, _) => localHandlerCaught = error?.error);
+      testCommand.errors.listen(
+        (error, _) => localHandlerCaught = error?.error,
+      );
       Command.globalExceptionHandler = (error, _) {
         globalHandlerCaught = error.error;
       };
@@ -469,9 +472,9 @@ void main() {
         () => asyncFunction1(TestType.exception),
         errorFilter: PredicatesErrorFilter([
           (error, stacktrace) => errorFilter<Exception>(
-                error,
-                ErrorReaction.throwIfNoLocalHandler,
-              ),
+            error,
+            ErrorReaction.throwIfNoLocalHandler,
+          ),
         ]),
       );
       Command.globalExceptionHandler = (error, _) {

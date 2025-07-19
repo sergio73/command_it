@@ -1,5 +1,5 @@
+import 'package:command_it/command_it.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_command/flutter_command.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,10 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage(
-    this.title, {
-    Key? key,
-  }) : super(key: key);
+  const MyHomePage(this.title, {Key? key}) : super(key: key);
   final String title;
 
   @override
@@ -53,24 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            const Text('You have pushed the button this many times:'),
             ValueListenableBuilder<String>(
-                valueListenable: _incrementCounterCommand,
-                builder: (context, val, _) {
-                  return Text(
-                    val,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  );
-                }),
+              valueListenable: _incrementCounterCommand,
+              builder: (context, val, _) {
+                return Text(
+                  val,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
+            ),
           ],
         ),
       ),

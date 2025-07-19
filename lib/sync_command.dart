@@ -1,4 +1,4 @@
-part of './flutter_command.dart';
+part of './command_it.dart';
 
 class CommandSync<TParam, TResult> extends Command<TParam, TResult> {
   final TResult Function(TParam)? _func;
@@ -22,8 +22,8 @@ class CommandSync<TParam, TResult> extends Command<TParam, TResult> {
     required super.notifyOnlyWhenValueChanges,
     required super.name,
     required super.noParamValue,
-  })  : _func = func,
-        _funcNoParam = funcNoParam;
+  }) : _func = func,
+       _funcNoParam = funcNoParam;
 
   @override
   TResult _execute([TParam? param]) {

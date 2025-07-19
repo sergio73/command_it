@@ -1,12 +1,12 @@
-# flutter_command
-![Build](https://github.com/escamoteur/flutter_command/workflows/Build/badge.svg)
-[![codecov](https://codecov.io/gh/escamoteur/flutter_command/branch/master/graph/badge.svg)](https://codecov.io/gh/escamoteur/flutter_command)
+# command_it
+![Build](https://github.com/escamoteur/command_it/workflows/Build/badge.svg)
+[![codecov](https://codecov.io/gh/escamoteur/command_it/branch/master/graph/badge.svg)](https://codecov.io/gh/escamoteur/command_it)
 
-flutter_command is a way to manage your state based on `ValueListenable` and the `Command` design pattern. Sounds scary uh? Ok lets try it a different way. A `Command` is an object that wraps a function that can be executed by calling the command, therefore decoupling your UI from the wrapped function.
+command_it is a way to manage your state based on `ValueListenable` and the `Command` design pattern. Sounds scary uh? Ok lets try it a different way. A `Command` is an object that wraps a function that can be executed by calling the command, therefore decoupling your UI from the wrapped function.
 
-It's not that easy to define what exactly state management is (see https://medium.com/super-declarative/understanding-state-management-and-why-you-never-will-dd84b624d0e ). For me it's how the UI triggers processes in the model/business layer of your app and how to get back the results of these processes to display them. For both aspects `flutter_command` offers solution plus some nice extras. So in a way it offers the same that BLoC does but in a more logical way.
+It's not that easy to define what exactly state management is (see https://medium.com/super-declarative/understanding-state-management-and-why-you-never-will-dd84b624d0e ). For me it's how the UI triggers processes in the model/business layer of your app and how to get back the results of these processes to display them. For both aspects `command_it` offers solution plus some nice extras. So in a way it offers the same that BLoC does but in a more logical way.
 
->This readme might seem very long, but it will guide you easily step by step through all features of `flutter_command`.
+>This readme might seem very long, but it will guide you easily step by step through all features of `command_it`.
 
 > **Breaking Change** A `Command` by default will always notify changes unlike, `ValueNotifier` which only notifies its liteners when the value it holds changes. For more details check this [section](#a-command-always-notifies-by-default).
 
@@ -91,7 +91,7 @@ So far the command did not do more than what you could do with BLoC, besides tha
 
 Let's explore this features by examining the included `example` app which queries an open weather service and displays a list of cities with the current weather. 
 
-![](https://github.com/escamoteur/flutter_command/blob/master/misc/screen_shot_example.png)
+![](https://github.com/escamoteur/command_it/blob/master/misc/screen_shot_example.png)
 
 The app uses a `WeatherManager` which contains the `Command` to update the `ListView` by making a REST call:
 
@@ -162,7 +162,7 @@ child: ValueListenableBuilder<bool>(
 > :triangular_flag_on_post: As it's not possible to update the UI while a synchronous function is being executed `Commands` that wrap a synchronous function don't support `isExecuting` and will throw an assertion if you try to access it.
 
 ### Update the UI on change of the search field
-As we don't want to send a new HTTP request on every keypress in the search field we don't directly wire the `onChanged` event to the `updateWeatherCommand`. Instead we use a second `Command` to convert the `onChanged` event to a `ValueListenable` so that we can use the `debounce` and `listen` function of my extension function package `functional_listener`:
+As we don't want to send a new HTTP request on every keypress in the search field we don't directly wire the `onChanged` event to the `updateWeatherCommand`. Instead we use a second `Command` to convert the `onChanged` event to a `ValueListenable` so that we can use the `debounce` and `listen` function of my extension function package `listen_it`:
 
 For this a synchronous `Command` is sufficient:
 
@@ -253,7 +253,7 @@ child: ValueListenableBuilder<bool>(
 ### Error Handling
 If the wrapped function inside a `Command` throws an `Exception` the `Command` catches it so your App won't crash.
 Instead it will wrap the caught error together with the value that was passed when the command was executed in a `CommandError` object and assign it to the `Command's` `thrownExeceptions` property which is a `ValueListenable<CommandError>`.
-So to react on occurring error you can register your handler with `addListener` or use my `listen` extension function from `functional_listener` as it is done in the example:
+So to react on occurring error you can register your handler with `addListener` or use my `listen` extension function from `listen_it` as it is done in the example:
 
 ```Dart
 /// in HomePage.dart
@@ -274,7 +274,7 @@ void didChangeDependencies() {
   super.didChangeDependencies();
 }
 ```
-Unfortunately its not possible to reset the value of a `ValueNotifier` without triggering its listeners. So if you have registered a listener you will get it called at every start of a `Command` execution with a value of `null` and clear all previous errors. If you use `functional_listener` you can do it easily by using the `where` extension.
+Unfortunately its not possible to reset the value of a `ValueNotifier` without triggering its listeners. So if you have registered a listener you will get it called at every start of a `Command` execution with a value of `null` and clear all previous errors. If you use `listen_it` you can do it easily by using the `where` extension.
 
 ### Error handling the fine print
 You can tweak the behaviour of the error handling by passing a `catchAlways` parameter to the factory functions. If you pass `false` Exceptions will only be caught if there is a listener on `errors` or on `results` (see next chapter). You can also change the default behaviour of all `Command` in your app by changing the value of the `catchAlwaysDefault` property. During development its a good idea to set it to `false` to find any non handled exception. In production, setting it to `true` might be the better decision to prevent hard crashes. Note that `catchAlwaysDefault` property will be implicitly ignored if the `catchAlways` parameter for a command is set.
@@ -286,10 +286,10 @@ static void Function(String commandName, CommandError<Object> error) globalExcep
 ```
 If you assign a handler function to it, it will be called for all Exceptions thrown by any `Command` in your app independent of the value of `catchAlways` if the `Command` has no listeners on `errors` or on `results`.
 
-The overall work flow of exception handling in flutter_command is depicted in the following diagram.
+The overall work flow of exception handling in command_it is depicted in the following diagram.
 
 <!-- just to keep the image scale correctly in small screens -->
-![](https://github.com/escamoteur/flutter_command/blob/master/misc/exception_handling.png)
+![](https://github.com/escamoteur/command_it/blob/master/misc/exception_handling.png)
 
 
 ## Getting all data at once
@@ -357,7 +357,7 @@ Even if you use `results` the other properties are updated as before, so you can
 If you want to be able to always display data (while loading or in case of an error) you can pass `includeLastResultInCommandResults=true`, the last successful result will be included as `data` unless a new result is available.
 
 ### CommandBuilder, reducing boilerplate
-`flutter_command` includes a `CommandBuilder` widget which makes the code above a bit nicer:
+`command_it` includes a `CommandBuilder` widget which makes the code above a bit nicer:
 
 ```Dart
 child: CommandBuilder<String, List<WeatherEntry>>(

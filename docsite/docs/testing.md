@@ -100,7 +100,7 @@ However note that, if `TParam` the type of parameter, `TResult` the type of the 
 
 ## Mocking Commands
 
-Its not always possible to create all the `Command`s upfront and proceed the UI development. In order to keep these process independent it would be necessary that the `Commands` be mockable. This also ensures that the Commands can evolve independently without affecting the UI widget tests as long as they stick to the required `TParam`, `TResult` signature. Hence `flutter_command` exposes a `MockCommand` class which provides utility functions to mock a `Command`.
+Its not always possible to create all the `Command`s upfront and proceed the UI development. In order to keep these process independent it would be necessary that the `Commands` be mockable. This also ensures that the Commands can evolve independently without affecting the UI widget tests as long as they stick to the required `TParam`, `TResult` signature. Hence `command_it` exposes a `MockCommand` class which provides utility functions to mock a `Command`.
 
 Let us see an example which is similar to the above mentioned greeting command. We noticed that the `results` should notify results in the form of `CommandResult`. This behavior can be easily mocked as shown below. For this assume you have Text widget that shows this greeting message and we use a `ValueListenableBuilder` in this case. 
 
