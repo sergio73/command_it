@@ -23,8 +23,8 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
   whileExecuting;
   final Widget Function(
     BuildContext context,
-    TResult? lastValue,
     Object,
+    TResult? lastValue,
     TParam?,
   )?
   onError;
@@ -72,7 +72,7 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
               'This CommandBuilder received an error from Command ${command.name} '
               'but the errorReaction indidates that the error should not be handled locally. ',
             );
-            return onError!.call(context, lastData, error, paramData);
+            return onError!.call(context, error, lastData, paramData);
           },
         );
       },
