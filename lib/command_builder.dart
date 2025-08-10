@@ -63,7 +63,7 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
                   ? (lastData, paramData) =>
                       whileExecuting!.call(context, lastData, paramData)
                   : null,
-          onError: (lastData, error, paramData) {
+          onError: (error, lastData, paramData) {
             if (onError == null) {
               return const SizedBox();
             }
