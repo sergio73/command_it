@@ -23,8 +23,8 @@ class CommandBuilder<TParam, TResult> extends StatelessWidget {
   whileExecuting;
   final Widget Function(
     BuildContext context,
-    Object,
     TResult? lastValue,
+    Object,
     TParam?,
   )?
   onError;
